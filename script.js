@@ -12,7 +12,7 @@ class Stopwatch extends React.Component {
                 seconds: 0,
                 miliseconds: 0
             },
-            results: []
+            listResults: []
         }
     }
 
@@ -115,20 +115,22 @@ class Stopwatch extends React.Component {
         this.reset();
         this.print();
     }
+
     // Metoda addListItem przekazuje wynik do listy czasów
     addListItem() {
-        this.state.results.push(this.state.times);
-        const list = document.querySelector('.results');
-        const listItem = document.createElement('li');
-        listItem.innerHTML = this.format(this.times);
-        list.appendChild(listItem);
+        const listItem = this.format(this.state.times);
+        const listResults = [...this.state.listResults, listItem];
+        
+        this.setState({
+            listResults
+        });
     }
+
     // Metoda resetList resetuje listę czasów
     resetList() {
         this.setState({
-            results: []
-            })
-        document.querySelector('.results').innerHTML = '';
+            listResults: []
+        })
     }
 
     render() {
@@ -142,7 +144,7 @@ class Stopwatch extends React.Component {
                     <a href="#" className="button" onClick={this.resetList.bind(this)}>Reset time list</a>   
                 </nav>
                 <div className="stopwatch">{this.state.display}</div>
-                <ul className="results">{this.state.results}</ul>
+                <ul className="results">{this.state.listResults.map(item => <li key={item}>{item}</li>)}</ul>
             </div>  
         );
     }   
